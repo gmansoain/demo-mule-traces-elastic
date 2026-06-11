@@ -1,22 +1,25 @@
-here's the json in elastic after adding the runtime manager property mule.put.trace.id.and.span.id.in.mdc=true
-
 {
-  "_index": "mule-logs",
-  "_id": "PSryrZ4BUa3pLIU4p-Ps",
+  "_index": "mule-traces",
+  "_id": "girIrJ4BUa3pLIU4TN3F",
   "_version": 1,
   "_score": 0,
   "_source": {
-    "@timestamp": "2026-06-09T19:53:22.978164903Z",
-    "Body": "Hello Gon!",
+    "@timestamp": "2026-06-09T14:27:29.097624860Z",
+    "Duration": 1462,
+    "EndTimestamp": "2026-06-09T14:27:29.099087732Z",
+    "Kind": "SPAN_KIND_INTERNAL",
+    "Link": "[]",
+    "Name": "mule:logger",
+    "ParentSpanId": "6011ed22b7bc225c",
     "Resource": {
       "envId": "09584395-bb28-48fd-b6f3-a0d5f5034e73",
       "orgId": "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2",
       "rootOrgId": "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b",
       "service": {
         "instance": {
-          "id": "e0f497ee-0962-4c79-9e4f-95b617355549"
+          "id": "65f2cf9a-b6e6-4074-9c4b-3d984ee85861"
         },
-        "name": "mule-container",
+        "name": "hello-gon-app",
         "namespace": "mule"
       },
       "telemetry": {
@@ -26,34 +29,58 @@ here's the json in elastic after adding the runtime manager property mule.put.tr
           "version": "1.60.1"
         }
       },
-      "workerId": "7f6874bf7b-pcg49"
+      "workerId": "6cd54f6f47-xpkvv"
     },
     "Scope": {
-      "name": "org.mule.runtime.core.internal.processor.LoggerMessageProcessor",
-      "version": ""
+      "name": "mule",
+      "version": "1.0.0"
     },
-    "SeverityNumber": 9,
-    "SeverityText": "INFO",
-    "SpanId": "f46ed99f2f194444",
-    "TraceFlags": 1,
-    "TraceId": "0d468729b2cd0ce90b5f5737dc5b65c2",
-    "correlationId": "df24eaf0-643c-11f1-8559-ee6ec6b449ae",
-    "processorPath": "main-flow/processors/1",
-    "span_id": "f46ed99f2f194444",
+    "SpanId": "f7d1e5fe3557ae4e",
+    "TraceId": "b06a745a1d51e37776fdcd3e57b63d23",
+    "TraceStatus": 0,
+    "artifact": {
+      "id": "mule-ds-logs",
+      "type": "app"
+    },
+    "correlation": {
+      "id": "581fc480-640f-11f1-8676-966e3725302e"
+    },
+    "location": "main-flow/processors/1",
     "thread": {
-      "id": 26,
-      "name": "[MuleRuntime].uber.01: [mule-ds-logs].http-test-flow.CPU_LITE @56725cf0"
+      "end": {
+        "name": "[MuleRuntime].uber.04: [mule-ds-logs].scheduled-flow.CPU_LITE @2ea3ed9f"
+      },
+      "start": {
+        "id": "29",
+        "name": "[MuleRuntime].uber.04: [mule-ds-logs].scheduled-flow.CPU_LITE @2ea3ed9f"
+      }
     },
-    "trace_flags": "01",
-    "trace_id": "0d468729b2cd0ce90b5f5737dc5b65c2",
     "user_id": "22"
   },
   "fields": {
-    "Resource.service.name": [
-      "mule-container"
+    "thread.start.id.keyword": [
+      "29"
     ],
-    "thread.name": [
-      "[MuleRuntime].uber.01: [mule-ds-logs].http-test-flow.CPU_LITE @56725cf0"
+    "ParentSpanId": [
+      "6011ed22b7bc225c"
+    ],
+    "Resource.service.name": [
+      "hello-gon-app"
+    ],
+    "correlation.id": [
+      "581fc480-640f-11f1-8676-966e3725302e"
+    ],
+    "artifact.type": [
+      "app"
+    ],
+    "EndTimestamp": [
+      "2026-06-09T14:27:29.099Z"
+    ],
+    "Link.keyword": [
+      "[]"
+    ],
+    "Name": [
+      "mule:logger"
     ],
     "Resource.telemetry.sdk.language": [
       "java"
@@ -61,35 +88,44 @@ here's the json in elastic after adding the runtime manager property mule.put.tr
     "Resource.telemetry.sdk.name": [
       "opentelemetry"
     ],
-    "trace_flags": [
-      "01"
+    "artifact.id": [
+      "mule-ds-logs"
+    ],
+    "Kind": [
+      "SPAN_KIND_INTERNAL"
     ],
     "Resource.service.instance.id": [
-      "e0f497ee-0962-4c79-9e4f-95b617355549"
+      "65f2cf9a-b6e6-4074-9c4b-3d984ee85861"
     ],
-    "span_id.keyword": [
-      "f46ed99f2f194444"
+    "thread.end.name.keyword": [
+      "[MuleRuntime].uber.04: [mule-ds-logs].scheduled-flow.CPU_LITE @2ea3ed9f"
     ],
     "Resource.service.instance.id.keyword": [
-      "e0f497ee-0962-4c79-9e4f-95b617355549"
+      "65f2cf9a-b6e6-4074-9c4b-3d984ee85861"
     ],
-    "thread.id": [
-      26
+    "thread.start.id": [
+      "29"
+    ],
+    "thread.end.name": [
+      "[MuleRuntime].uber.04: [mule-ds-logs].scheduled-flow.CPU_LITE @2ea3ed9f"
+    ],
+    "Kind.keyword": [
+      "SPAN_KIND_INTERNAL"
     ],
     "Resource.service.name.keyword": [
-      "mule-container"
-    ],
-    "span_id": [
-      "f46ed99f2f194444"
+      "hello-gon-app"
     ],
     "Resource.orgId": [
       "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2"
     ],
+    "Duration": [
+      1462
+    ],
     "Resource.telemetry.sdk.language.keyword": [
       "java"
     ],
-    "TraceFlags": [
-      1
+    "thread.start.name.keyword": [
+      "[MuleRuntime].uber.04: [mule-ds-logs].scheduled-flow.CPU_LITE @2ea3ed9f"
     ],
     "Resource.rootOrgId": [
       "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b"
@@ -101,52 +137,40 @@ here's the json in elastic after adding the runtime manager property mule.put.tr
       "22"
     ],
     "TraceId": [
-      "0d468729b2cd0ce90b5f5737dc5b65c2"
+      "b06a745a1d51e37776fdcd3e57b63d23"
     ],
     "Resource.workerId.keyword": [
-      "7f6874bf7b-pcg49"
+      "6cd54f6f47-xpkvv"
     ],
     "Scope.name": [
-      "org.mule.runtime.core.internal.processor.LoggerMessageProcessor"
+      "mule"
     ],
-    "processorPath": [
+    "Link": [
+      "[]"
+    ],
+    "TraceStatus": [
+      0
+    ],
+    "location.keyword": [
       "main-flow/processors/1"
     ],
     "Resource.envId": [
       "09584395-bb28-48fd-b6f3-a0d5f5034e73"
     ],
-    "correlationId.keyword": [
-      "df24eaf0-643c-11f1-8559-ee6ec6b449ae"
-    ],
-    "processorPath.keyword": [
-      "main-flow/processors/1"
-    ],
     "Scope.version.keyword": [
-      ""
+      "1.0.0"
     ],
     "SpanId.keyword": [
-      "f46ed99f2f194444"
-    ],
-    "thread.name.keyword": [
-      "[MuleRuntime].uber.01: [mule-ds-logs].http-test-flow.CPU_LITE @56725cf0"
+      "f7d1e5fe3557ae4e"
     ],
     "Resource.service.namespace": [
       "mule"
     ],
-    "SeverityText": [
-      "INFO"
-    ],
     "user_id.keyword": [
       "22"
     ],
-    "SeverityNumber": [
-      9
-    ],
     "Resource.envId.keyword": [
       "09584395-bb28-48fd-b6f3-a0d5f5034e73"
-    ],
-    "Body.keyword": [
-      "Hello Gon!"
     ],
     "Resource.rootOrgId.keyword": [
       "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b"
@@ -154,29 +178,26 @@ here's the json in elastic after adding the runtime manager property mule.put.tr
     "Resource.service.namespace.keyword": [
       "mule"
     ],
-    "SeverityText.keyword": [
-      "INFO"
+    "correlation.id.keyword": [
+      "581fc480-640f-11f1-8676-966e3725302e"
     ],
-    "correlationId": [
-      "df24eaf0-643c-11f1-8559-ee6ec6b449ae"
+    "artifact.type.keyword": [
+      "app"
     ],
-    "trace_flags.keyword": [
-      "01"
-    ],
-    "Body": [
-      "Hello Gon!"
+    "Name.keyword": [
+      "mule:logger"
     ],
     "SpanId": [
-      "f46ed99f2f194444"
+      "f7d1e5fe3557ae4e"
     ],
-    "trace_id": [
-      "0d468729b2cd0ce90b5f5737dc5b65c2"
+    "artifact.id.keyword": [
+      "mule-ds-logs"
+    ],
+    "thread.start.name": [
+      "[MuleRuntime].uber.04: [mule-ds-logs].scheduled-flow.CPU_LITE @2ea3ed9f"
     ],
     "Resource.telemetry.sdk.name.keyword": [
       "opentelemetry"
-    ],
-    "trace_id.keyword": [
-      "0d468729b2cd0ce90b5f5737dc5b65c2"
     ],
     "Resource.telemetry.sdk.version.keyword": [
       "1.60.1"
@@ -185,19 +206,25 @@ here's the json in elastic after adding the runtime manager property mule.put.tr
       "1.60.1"
     ],
     "@timestamp": [
-      "2026-06-09T19:53:22.978Z"
+      "2026-06-09T14:27:29.097Z"
     ],
     "Scope.name.keyword": [
-      "org.mule.runtime.core.internal.processor.LoggerMessageProcessor"
+      "mule"
+    ],
+    "ParentSpanId.keyword": [
+      "6011ed22b7bc225c"
     ],
     "TraceId.keyword": [
-      "0d468729b2cd0ce90b5f5737dc5b65c2"
+      "b06a745a1d51e37776fdcd3e57b63d23"
     ],
     "Resource.workerId": [
-      "7f6874bf7b-pcg49"
+      "6cd54f6f47-xpkvv"
     ],
     "Scope.version": [
-      ""
+      "1.0.0"
+    ],
+    "location": [
+      "main-flow/processors/1"
     ]
   }
 }
