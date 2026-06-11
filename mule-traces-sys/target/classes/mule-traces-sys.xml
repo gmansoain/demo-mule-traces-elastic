@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="82dbf16d-a29f-4a46-95e7-f1e260abeea8" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mule-traces-sys-hello-flow" doc:id="6fe467e2-b3a3-47dc-9dde-ea38fc53689d" >
+		<http:listener doc:name="GET /hello" doc:id="02d6eb41-c44d-4c41-8c11-45b94e74850b" config-ref="HTTP_Listener_config" path="/hello" />
+		<flow-ref doc:name="log-context" doc:id="4fa7dad0-3c71-4e84-b6d2-d333da3ce1c6" name="log-context" />
+		<logger level="INFO" doc:name="Logger" doc:id="da59ff91-6a31-4896-98f5-d3ff848956a9" message="Hello World - request received" />
+		<logger level="INFO" doc:name="Hello from System API" doc:id="9223f027-3b19-49a0-a260-a418708252c0" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello from System API"&#10;}]' />
+		<choice doc:name="Inject errors?" doc:id="cbd76cc2-094b-42d0-80da-9ad2002ea5a0" >
+			<when expression="#[(random() * 100) &lt; (p('error.injection.rate') default '0' as Number)]" >
+				<logger level="WARN" doc:name="Logger" doc:id="dbf56737-2530-4637-94d9-09a4491fdca2" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&quot;message&quot;: 'Error injection: forcing failure (rate=' ++ (p('error.injection.rate') default '0') ++ '%)'&#10;}]" />
+				<raise-error doc:name="Raise error" doc:id="dd98afae-1732-4854-a6fa-189121931196" type="DEMO:INJECTED_FAILURE" description="Synthetic error injected by error.injection.rate" />
+			</when>
+			<otherwise >
+				<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello from System API"&#10;}]' doc:name="Hello from System API" doc:id="95468598-8b7f-44b4-87f8-f46f810cfb39" />
+				<logger level="INFO" doc:name="Logger" doc:id="b24d93bf-488f-450e-bd99-503ad4a9d539" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello Gon - request succeeded"&#10;}]' />
+			</otherwise>
+		</choice>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="3741f837-ad2b-492b-acec-a2b138ea248f" type="DEMO:INJECTED_FAILURE" >
+				<logger level="ERROR" doc:name="Logger" doc:id="2d6bd4ea-cb95-468a-a702-6ba7a239a4c6" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Synthetic failure handled: " ++ error.description&#10;}]' />
+				<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{ &#10;	"error": "Synthetic failure injected for testing"&#10;}]' doc:name="Set Payload" doc:id="b488897a-9d00-4c17-a8b3-561d9b8af1ec" />
+				<set-variable value="500" doc:name="Set Variable" doc:id="19a2ea97-8888-4b3d-a41e-b3cdd10c3f55" variableName="httpStatus" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<sub-flow name="log-context" doc:id="f586a183-01c6-4978-97b5-74224fd03d8b" >
+		<tracing:set-logging-variable doc:id="fdb0603b-7a15-4268-9f21-65757eb19f5d" variableName="client_id" value="#[attributes.headers['client_id']]" doc:name="client_id" />
+		<tracing:set-logging-variable doc:id="b57f24a4-b75e-473b-93a1-1eaec6b007c2" variableName="http_method" value="#[attributes.method]" doc:name="HTTP Method" />
+		<tracing:set-logging-variable doc:id="3483248a-3083-4c8f-b395-a5e8668fda72" variableName="http.route" value="#[attributes.requestPath]" doc:name="http.route" />
+	</sub-flow>
+</mule>
