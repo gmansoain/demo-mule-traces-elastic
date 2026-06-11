@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
+	<http:request-config name="HTTP_Request_config" doc:name="HTTP Request config" doc:id="7a1ea1d5-59de-45b5-bb67-832944c86a9b" >
+		<http:request-connection host="mule-traces-sys" port="8081" />
+	</http:request-config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ccf67e71-3acc-476e-afc2-dd69e42a579f" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mule-traces-proc-hello-flow" doc:id="0a8fcbcd-8255-4683-98a8-66a2b4c3a4a7" >
+		<http:listener doc:name="GET /hello" doc:id="95ac53fa-eb7a-43af-a85e-9ccc8f132b77" config-ref="HTTP_Listener_config" path="/hello"/>
+		<flow-ref doc:name="log-context" doc:id="4b579478-9c28-4d06-a304-3ce343cca6b9" name="log-context" />
+		<logger level="INFO" doc:name="Hello from Process API" doc:id="3c057533-f792-46ac-9748-59db36f272b2" message='#[" Hello from Process API"]'/>
+		<http:request doc:name="Request" doc:id="000e3de2-0c44-4020-9786-96e96b21528c" config-ref="HTTP_Request_config" path="/hello">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	client_id : attributes.headers['client_id']
+}]]]></http:headers>
+		</http:request>
+	</flow>
+	<sub-flow name="log-context" doc:id="5ab18ba8-1900-4a75-b939-41de02184793" >
+		<tracing:set-logging-variable doc:name="client_id" doc:id="c142b3ee-bd2d-4b74-81b6-7623e1131a87" variableName="client_id" value="#[attributes.headers['client_id']]" />
+		<tracing:set-logging-variable doc:name="HTTP Method" doc:id="d88d3b6d-d75b-490b-bb9b-80fe4cf94521" variableName="http_method" value="#[attributes.method]" />
+		<tracing:set-logging-variable doc:name="http.route" doc:id="a31696c8-1dc3-48a7-a5f6-0f69137ec6b3" variableName="http.route" value="#[attributes.requestPath]" />
+	</sub-flow>
+</mule>
