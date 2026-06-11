@@ -1,0 +1,167 @@
+# The JSON format of the logs sent to elastic is:
+{
+  "_index": "mule-logs",
+  "_id": "nyoGrZ4BUa3pLIU4c-Ir",
+  "_version": 1,
+  "_score": 0,
+  "_source": {
+    "@timestamp": "2026-06-09T15:35:14.061843546Z",
+    "Body": "Hello Gon!",
+    "Resource": {
+      "envId": "09584395-bb28-48fd-b6f3-a0d5f5034e73",
+      "orgId": "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2",
+      "rootOrgId": "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b",
+      "service": {
+        "instance": {
+          "id": "e741cf53-0af1-4675-bf60-e7bf47df118c"
+        },
+        "name": "mule-container",
+        "namespace": "mule"
+      },
+      "telemetry": {
+        "sdk": {
+          "language": "java",
+          "name": "opentelemetry",
+          "version": "1.60.1"
+        }
+      },
+      "workerId": "6b5ffdf676-lwtmv"
+    },
+    "Scope": {
+      "name": "org.mule.runtime.core.internal.processor.LoggerMessageProcessor",
+      "version": ""
+    },
+    "SeverityNumber": 9,
+    "SeverityText": "INFO",
+    "TraceFlags": 0,
+    "correlationId": "cf065f10-6418-11f1-84ef-8afaa21f5334",
+    "processorPath": "main-flow/processors/1",
+    "thread": {
+      "id": 29,
+      "name": "[MuleRuntime].uber.04: [mule-ds-logs].http-test-flow.CPU_LITE @7f145f22"
+    },
+    "user_id": "22"
+  },
+  "fields": {
+    "Resource.envId": [
+      "09584395-bb28-48fd-b6f3-a0d5f5034e73"
+    ],
+    "correlationId.keyword": [
+      "cf065f10-6418-11f1-84ef-8afaa21f5334"
+    ],
+    "processorPath.keyword": [
+      "main-flow/processors/1"
+    ],
+    "Scope.version.keyword": [
+      ""
+    ],
+    "Resource.service.name": [
+      "mule-container"
+    ],
+    "thread.name": [
+      "[MuleRuntime].uber.04: [mule-ds-logs].http-test-flow.CPU_LITE @7f145f22"
+    ],
+    "thread.name.keyword": [
+      "[MuleRuntime].uber.04: [mule-ds-logs].http-test-flow.CPU_LITE @7f145f22"
+    ],
+    "Resource.service.namespace": [
+      "mule"
+    ],
+    "SeverityText": [
+      "INFO"
+    ],
+    "Resource.telemetry.sdk.language": [
+      "java"
+    ],
+    "user_id.keyword": [
+      "22"
+    ],
+    "Resource.telemetry.sdk.name": [
+      "opentelemetry"
+    ],
+    "SeverityNumber": [
+      9
+    ],
+    "Resource.envId.keyword": [
+      "09584395-bb28-48fd-b6f3-a0d5f5034e73"
+    ],
+    "Body.keyword": [
+      "Hello Gon!"
+    ],
+    "Resource.rootOrgId.keyword": [
+      "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b"
+    ],
+    "Resource.service.namespace.keyword": [
+      "mule"
+    ],
+    "SeverityText.keyword": [
+      "INFO"
+    ],
+    "Resource.service.instance.id": [
+      "e741cf53-0af1-4675-bf60-e7bf47df118c"
+    ],
+    "correlationId": [
+      "cf065f10-6418-11f1-84ef-8afaa21f5334"
+    ],
+    "Body": [
+      "Hello Gon!"
+    ],
+    "Resource.service.instance.id.keyword": [
+      "e741cf53-0af1-4675-bf60-e7bf47df118c"
+    ],
+    "thread.id": [
+      29
+    ],
+    "Resource.service.name.keyword": [
+      "mule-container"
+    ],
+    "Resource.orgId": [
+      "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2"
+    ],
+    "Resource.telemetry.sdk.language.keyword": [
+      "java"
+    ],
+    "Resource.telemetry.sdk.name.keyword": [
+      "opentelemetry"
+    ],
+    "Resource.telemetry.sdk.version.keyword": [
+      "1.60.1"
+    ],
+    "TraceFlags": [
+      0
+    ],
+    "Resource.telemetry.sdk.version": [
+      "1.60.1"
+    ],
+    "@timestamp": [
+      "2026-06-09T15:35:14.061Z"
+    ],
+    "Resource.rootOrgId": [
+      "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b"
+    ],
+    "Scope.name.keyword": [
+      "org.mule.runtime.core.internal.processor.LoggerMessageProcessor"
+    ],
+    "Resource.orgId.keyword": [
+      "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2"
+    ],
+    "user_id": [
+      "22"
+    ],
+    "Resource.workerId": [
+      "6b5ffdf676-lwtmv"
+    ],
+    "Scope.version": [
+      ""
+    ],
+    "Resource.workerId.keyword": [
+      "6b5ffdf676-lwtmv"
+    ],
+    "Scope.name": [
+      "org.mule.runtime.core.internal.processor.LoggerMessageProcessor"
+    ],
+    "processorPath": [
+      "main-flow/processors/1"
+    ]
+  }
+}

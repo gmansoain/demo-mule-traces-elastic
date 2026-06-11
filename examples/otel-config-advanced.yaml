@@ -1,0 +1,176 @@
+
+# To limit exposure to denial of service attacks, change the host in endpoints below from 0.0.0.0 to a specific network interface.
+# See https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/security-best-practices.md#safeguards-against-denial-of-service-attacks
+
+extensions:
+  health_check:
+  pprof:
+    endpoint: 0.0.0.0:1777
+  zpages:
+    endpoint: 0.0.0.0:55679
+
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+  opencensus:
+    endpoint: 0.0.0.0:55678
+
+  # Collect own metrics
+  prometheus:
+    config:
+      scrape_configs:
+      - job_name: 'otel-collector'
+        scrape_interval: 10s
+        static_configs:
+        - targets: ['0.0.0.0:8888']
+
+  jaeger:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:14250
+      thrift_binary:
+        endpoint: 0.0.0.0:6832
+      thrift_compact:
+        endpoint: 0.0.0.0:6831
+      thrift_http:
+        endpoint: 0.0.0.0:14268
+
+  zipkin:
+    endpoint: 0.0.0.0:9411
+
+processors:
+  batch:
+    send_batch_size: 10
+    timeout: 5s
+
+  resource/static:
+    attributes:
+      - key: deployment.environment
+        value: prod
+        action: insert
+      - key: deployment.target
+        value: runtime-fabric
+        action: insert
+      - key: deployment.region
+        value: eu-central-1
+        action: insert
+      - key: mule.runtime.version
+        value: "4.11.0"
+        action: insert
+
+  transform/event-outcome:
+    error_mode: ignore
+    log_statements:
+      - context: log
+        statements:
+          - set(attributes["event.outcome"], "success") where severity_text == "INFO"
+          - set(attributes["event.outcome"], "success") where severity_text == "DEBUG"
+          - set(attributes["event.outcome"], "failure") where severity_text == "WARN"
+          - set(attributes["event.outcome"], "failure") where severity_text == "ERROR"
+          - set(attributes["event.outcome"], "failure") where severity_text == "FATAL"
+
+  transform/promote-custom:
+    error_mode: ignore
+    log_statements:
+      - context: log
+        statements:
+          # Move correlationId → labels.correlation_id
+          - set(attributes["labels.correlation_id"], attributes["correlationId"]) where attributes["correlationId"] != nil
+          - delete_key(attributes, "correlationId")
+
+          # Rename processorPath → mule.flow.processor_path
+          - set(attributes["mule.flow.processor_path"], attributes["processorPath"]) where attributes["processorPath"] != nil
+          - delete_key(attributes, "processorPath")
+
+          # Restructure thread.* (top-level on Mule) → process.thread.* (ECS)
+          - set(attributes["process.thread.id"], attributes["thread.id"]) where attributes["thread.id"] != nil
+          - set(attributes["process.thread.name"], attributes["thread.name"]) where attributes["thread.name"] != nil
+          - delete_key(attributes, "thread.id")
+          - delete_key(attributes, "thread.name")
+
+  transform/promote-anypoint-resource:
+    error_mode: ignore
+    log_statements:
+      - context: resource
+        statements:
+          # Anypoint platform IDs → ECS labels
+          - set(attributes["labels.anypoint_env_id"], attributes["envId"]) where attributes["envId"] != nil
+          - set(attributes["labels.anypoint_org_id"], attributes["orgId"]) where attributes["orgId"] != nil
+          - set(attributes["labels.anypoint_root_org_id"], attributes["rootOrgId"]) where attributes["rootOrgId"] != nil
+          - delete_key(attributes, "envId")
+          - delete_key(attributes, "orgId")
+          - delete_key(attributes, "rootOrgId")
+
+          # Worker / replica ID → host.id
+          - set(attributes["host.id"], attributes["workerId"]) where attributes["workerId"] != nil
+          - delete_key(attributes, "workerId")
+
+  transform/promote-custom-spans:
+    error_mode: ignore
+    trace_statements:
+      - context: span
+        statements:
+          # correlation.id (dot-separated on traces) → labels.correlation_id (consistent with logs)
+          - set(attributes["labels.correlation_id"], attributes["correlation.id"]) where attributes["correlation.id"] != nil
+          - delete_key(attributes, "correlation.id")
+
+          # location (traces) → mule.flow.processor_path (consistent with logs after promote-custom)
+          - set(attributes["mule.flow.processor_path"], attributes["location"]) where attributes["location"] != nil
+          - delete_key(attributes, "location")
+
+          # Mule artifact identity → ECS-style service.* attributes
+          # (the artifact.id is also the *real* service.name, replacing "mule-container" on logs)
+          - set(attributes["service.name"], attributes["artifact.id"]) where attributes["artifact.id"] != nil
+          - set(attributes["mule.artifact.type"], attributes["artifact.type"]) where attributes["artifact.type"] != nil
+          - delete_key(attributes, "artifact.id")
+          - delete_key(attributes, "artifact.type")
+
+          # thread.start.* / thread.end.* → process.thread.* (ECS) — pick start as the canonical
+          - set(attributes["process.thread.id"], attributes["thread.start.id"]) where attributes["thread.start.id"] != nil
+          - set(attributes["process.thread.name"], attributes["thread.start.name"]) where attributes["thread.start.name"] != nil
+          - set(attributes["process.thread.end_name"], attributes["thread.end.name"]) where attributes["thread.end.name"] != nil
+          - delete_key(attributes, "thread.start.id")
+          - delete_key(attributes, "thread.start.name")
+          - delete_key(attributes, "thread.end.name")
+
+exporters:
+  elasticsearch/logs-ecs:
+    endpoints: ["http://172.31.41.128:9200"]
+    user: mule-logger
+    password: "Mule1234"
+    logs_index: mule-logs-ecs
+    mapping:
+      mode: ecs
+  elasticsearch/traces-ecs:
+    endpoints: ["http://172.31.41.128:9200"]
+    user: mule-tracer
+    password: "Mule1234"
+    traces_index: mule-traces-ecs
+    mapping:
+      mode: ecs
+
+
+service:
+
+  pipelines:
+    logs/ecs:
+      receivers: [otlp]
+      processors:
+        - resource/static
+        - transform/promote-anypoint-resource
+        - transform/promote-custom
+        - batch
+      exporters: [elasticsearch/logs-ecs]
+    traces:
+      receivers: [otlp]
+      processors: 
+        - resource/static
+        - transform/promote-anypoint-resource
+        - transform/promote-custom-spans
+        - batch
+      exporters: [elasticsearch/traces-ecs]
+
+

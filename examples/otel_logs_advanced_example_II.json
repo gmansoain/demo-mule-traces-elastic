@@ -1,0 +1,261 @@
+{
+  "_index": "mule-logs-ecs",
+  "_id": "wyrCsZ4BUa3pLIU4gOSC",
+  "_version": 1,
+  "_score": 0,
+  "_source": {
+    "@timestamp": "2026-06-10T13:39:06.279870298Z",
+    "agent": {
+      "name": "opentelemetry/java",
+      "version": "1.60.1"
+    },
+    "api": {
+      "layer": "process"
+    },
+    "business": {
+      "domain": "payments"
+    },
+    "client_id": "Mobile App",
+    "deployment": {
+      "region": "eu-central-1",
+      "target": "runtime-fabric"
+    },
+    "event": {
+      "severity": 9
+    },
+    "host": {
+      "id": "64d8569b7d-wrk79"
+    },
+    "http": {
+      "route": "/hello"
+    },
+    "http_method": "GET",
+    "labels": {
+      "anypoint_env_id": "09584395-bb28-48fd-b6f3-a0d5f5034e73",
+      "anypoint_org_id": "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2",
+      "anypoint_root_org_id": "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b",
+      "correlation_id": "c05192f0-64d1-11f1-8317-420eb69acb4d"
+    },
+    "log": {
+      "level": "INFO"
+    },
+    "message": "{\n  \"message\": \"Hello Gon!\"\n}",
+    "mule": {
+      "flow": {
+        "processor_path": "hello-gon-subflow/processors/4"
+      },
+      "runtime": {
+        "version": "4.12.0"
+      }
+    },
+    "process": {
+      "thread": {
+        "id": 29,
+        "name": "[MuleRuntime].uber.04: [mule-ds-logs].hello-gon-main.CPU_LITE @2a961de3"
+      }
+    },
+    "service": {
+      "environment": "prod",
+      "name": "process-payments-sepa",
+      "namespace": "retail-banking",
+      "node": {
+        "name": "2494d5ed-1bb3-4d28-b62d-b346a6e7183a"
+      },
+      "version": "1.2.0"
+    },
+    "span": {
+      "id": "701ebdfdaa734c09"
+    },
+    "span_id": "701ebdfdaa734c09",
+    "trace": {
+      "id": "69dc47c33915507a6291fa442a11bca2"
+    },
+    "trace_flags": "01",
+    "trace_id": "69dc47c33915507a6291fa442a11bca2"
+  },
+  "fields": {
+    "agent.version.keyword": [
+      "1.60.1"
+    ],
+    "api.layer": [
+      "process"
+    ],
+    "labels.correlation_id": [
+      "c05192f0-64d1-11f1-8317-420eb69acb4d"
+    ],
+    "service.name.keyword": [
+      "process-payments-sepa"
+    ],
+    "process.thread.name.keyword": [
+      "[MuleRuntime].uber.04: [mule-ds-logs].hello-gon-main.CPU_LITE @2a961de3"
+    ],
+    "client_id": [
+      "Mobile App"
+    ],
+    "service.node.name.keyword": [
+      "2494d5ed-1bb3-4d28-b62d-b346a6e7183a"
+    ],
+    "labels.correlation_id.keyword": [
+      "c05192f0-64d1-11f1-8317-420eb69acb4d"
+    ],
+    "deployment.region": [
+      "eu-central-1"
+    ],
+    "http_method": [
+      "GET"
+    ],
+    "service.version.keyword": [
+      "1.2.0"
+    ],
+    "trace_flags": [
+      "01"
+    ],
+    "log.level": [
+      "INFO"
+    ],
+    "agent.name": [
+      "opentelemetry/java"
+    ],
+    "host.id.keyword": [
+      "64d8569b7d-wrk79"
+    ],
+    "http.route.keyword": [
+      "/hello"
+    ],
+    "labels.anypoint_env_id.keyword": [
+      "09584395-bb28-48fd-b6f3-a0d5f5034e73"
+    ],
+    "span_id.keyword": [
+      "701ebdfdaa734c09"
+    ],
+    "mule.runtime.version": [
+      "4.12.0"
+    ],
+    "process.thread.name": [
+      "[MuleRuntime].uber.04: [mule-ds-logs].hello-gon-main.CPU_LITE @2a961de3"
+    ],
+    "mule.runtime.version.keyword": [
+      "4.12.0"
+    ],
+    "event.severity": [
+      9
+    ],
+    "labels.anypoint_org_id.keyword": [
+      "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2"
+    ],
+    "labels.anypoint_root_org_id.keyword": [
+      "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b"
+    ],
+    "client_id.keyword": [
+      "Mobile App"
+    ],
+    "mule.flow.processor_path": [
+      "hello-gon-subflow/processors/4"
+    ],
+    "span_id": [
+      "701ebdfdaa734c09"
+    ],
+    "trace.id.keyword": [
+      "69dc47c33915507a6291fa442a11bca2"
+    ],
+    "span.id": [
+      "701ebdfdaa734c09"
+    ],
+    "service.namespace": [
+      "retail-banking"
+    ],
+    "message.keyword": [
+      "{\n  \"message\": \"Hello Gon!\"\n}"
+    ],
+    "business.domain": [
+      "payments"
+    ],
+    "service.environment.keyword": [
+      "prod"
+    ],
+    "agent.version": [
+      "1.60.1"
+    ],
+    "process.thread.id": [
+      29
+    ],
+    "deployment.target": [
+      "runtime-fabric"
+    ],
+    "labels.anypoint_root_org_id": [
+      "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b"
+    ],
+    "log.level.keyword": [
+      "INFO"
+    ],
+    "labels.anypoint_env_id": [
+      "09584395-bb28-48fd-b6f3-a0d5f5034e73"
+    ],
+    "mule.flow.processor_path.keyword": [
+      "hello-gon-subflow/processors/4"
+    ],
+    "business.domain.keyword": [
+      "payments"
+    ],
+    "service.node.name": [
+      "2494d5ed-1bb3-4d28-b62d-b346a6e7183a"
+    ],
+    "span.id.keyword": [
+      "701ebdfdaa734c09"
+    ],
+    "trace.id": [
+      "69dc47c33915507a6291fa442a11bca2"
+    ],
+    "deployment.region.keyword": [
+      "eu-central-1"
+    ],
+    "service.namespace.keyword": [
+      "retail-banking"
+    ],
+    "trace_flags.keyword": [
+      "01"
+    ],
+    "host.id": [
+      "64d8569b7d-wrk79"
+    ],
+    "labels.anypoint_org_id": [
+      "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2"
+    ],
+    "service.environment": [
+      "prod"
+    ],
+    "trace_id": [
+      "69dc47c33915507a6291fa442a11bca2"
+    ],
+    "service.name": [
+      "process-payments-sepa"
+    ],
+    "agent.name.keyword": [
+      "opentelemetry/java"
+    ],
+    "deployment.target.keyword": [
+      "runtime-fabric"
+    ],
+    "api.layer.keyword": [
+      "process"
+    ],
+    "message": [
+      "{\n  \"message\": \"Hello Gon!\"\n}"
+    ],
+    "trace_id.keyword": [
+      "69dc47c33915507a6291fa442a11bca2"
+    ],
+    "@timestamp": [
+      "2026-06-10T13:39:06.279Z"
+    ],
+    "service.version": [
+      "1.2.0"
+    ],
+    "http.route": [
+      "/hello"
+    ],
+    "http_method.keyword": [
+      "GET"
+    ]
+  }
+}

@@ -1,0 +1,203 @@
+here's the json in elastic after adding the runtime manager property mule.put.trace.id.and.span.id.in.mdc=true
+
+{
+  "_index": "mule-logs",
+  "_id": "PSryrZ4BUa3pLIU4p-Ps",
+  "_version": 1,
+  "_score": 0,
+  "_source": {
+    "@timestamp": "2026-06-09T19:53:22.978164903Z",
+    "Body": "Hello Gon!",
+    "Resource": {
+      "envId": "09584395-bb28-48fd-b6f3-a0d5f5034e73",
+      "orgId": "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2",
+      "rootOrgId": "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b",
+      "service": {
+        "instance": {
+          "id": "e0f497ee-0962-4c79-9e4f-95b617355549"
+        },
+        "name": "mule-container",
+        "namespace": "mule"
+      },
+      "telemetry": {
+        "sdk": {
+          "language": "java",
+          "name": "opentelemetry",
+          "version": "1.60.1"
+        }
+      },
+      "workerId": "7f6874bf7b-pcg49"
+    },
+    "Scope": {
+      "name": "org.mule.runtime.core.internal.processor.LoggerMessageProcessor",
+      "version": ""
+    },
+    "SeverityNumber": 9,
+    "SeverityText": "INFO",
+    "SpanId": "f46ed99f2f194444",
+    "TraceFlags": 1,
+    "TraceId": "0d468729b2cd0ce90b5f5737dc5b65c2",
+    "correlationId": "df24eaf0-643c-11f1-8559-ee6ec6b449ae",
+    "processorPath": "main-flow/processors/1",
+    "span_id": "f46ed99f2f194444",
+    "thread": {
+      "id": 26,
+      "name": "[MuleRuntime].uber.01: [mule-ds-logs].http-test-flow.CPU_LITE @56725cf0"
+    },
+    "trace_flags": "01",
+    "trace_id": "0d468729b2cd0ce90b5f5737dc5b65c2",
+    "user_id": "22"
+  },
+  "fields": {
+    "Resource.service.name": [
+      "mule-container"
+    ],
+    "thread.name": [
+      "[MuleRuntime].uber.01: [mule-ds-logs].http-test-flow.CPU_LITE @56725cf0"
+    ],
+    "Resource.telemetry.sdk.language": [
+      "java"
+    ],
+    "Resource.telemetry.sdk.name": [
+      "opentelemetry"
+    ],
+    "trace_flags": [
+      "01"
+    ],
+    "Resource.service.instance.id": [
+      "e0f497ee-0962-4c79-9e4f-95b617355549"
+    ],
+    "span_id.keyword": [
+      "f46ed99f2f194444"
+    ],
+    "Resource.service.instance.id.keyword": [
+      "e0f497ee-0962-4c79-9e4f-95b617355549"
+    ],
+    "thread.id": [
+      26
+    ],
+    "Resource.service.name.keyword": [
+      "mule-container"
+    ],
+    "span_id": [
+      "f46ed99f2f194444"
+    ],
+    "Resource.orgId": [
+      "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2"
+    ],
+    "Resource.telemetry.sdk.language.keyword": [
+      "java"
+    ],
+    "TraceFlags": [
+      1
+    ],
+    "Resource.rootOrgId": [
+      "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b"
+    ],
+    "Resource.orgId.keyword": [
+      "98b7f48b-6753-4ba8-bcf3-7c0fb76bb6f2"
+    ],
+    "user_id": [
+      "22"
+    ],
+    "TraceId": [
+      "0d468729b2cd0ce90b5f5737dc5b65c2"
+    ],
+    "Resource.workerId.keyword": [
+      "7f6874bf7b-pcg49"
+    ],
+    "Scope.name": [
+      "org.mule.runtime.core.internal.processor.LoggerMessageProcessor"
+    ],
+    "processorPath": [
+      "main-flow/processors/1"
+    ],
+    "Resource.envId": [
+      "09584395-bb28-48fd-b6f3-a0d5f5034e73"
+    ],
+    "correlationId.keyword": [
+      "df24eaf0-643c-11f1-8559-ee6ec6b449ae"
+    ],
+    "processorPath.keyword": [
+      "main-flow/processors/1"
+    ],
+    "Scope.version.keyword": [
+      ""
+    ],
+    "SpanId.keyword": [
+      "f46ed99f2f194444"
+    ],
+    "thread.name.keyword": [
+      "[MuleRuntime].uber.01: [mule-ds-logs].http-test-flow.CPU_LITE @56725cf0"
+    ],
+    "Resource.service.namespace": [
+      "mule"
+    ],
+    "SeverityText": [
+      "INFO"
+    ],
+    "user_id.keyword": [
+      "22"
+    ],
+    "SeverityNumber": [
+      9
+    ],
+    "Resource.envId.keyword": [
+      "09584395-bb28-48fd-b6f3-a0d5f5034e73"
+    ],
+    "Body.keyword": [
+      "Hello Gon!"
+    ],
+    "Resource.rootOrgId.keyword": [
+      "37aa8fe0-4188-44c1-a9b5-bdce3ca12f0b"
+    ],
+    "Resource.service.namespace.keyword": [
+      "mule"
+    ],
+    "SeverityText.keyword": [
+      "INFO"
+    ],
+    "correlationId": [
+      "df24eaf0-643c-11f1-8559-ee6ec6b449ae"
+    ],
+    "trace_flags.keyword": [
+      "01"
+    ],
+    "Body": [
+      "Hello Gon!"
+    ],
+    "SpanId": [
+      "f46ed99f2f194444"
+    ],
+    "trace_id": [
+      "0d468729b2cd0ce90b5f5737dc5b65c2"
+    ],
+    "Resource.telemetry.sdk.name.keyword": [
+      "opentelemetry"
+    ],
+    "trace_id.keyword": [
+      "0d468729b2cd0ce90b5f5737dc5b65c2"
+    ],
+    "Resource.telemetry.sdk.version.keyword": [
+      "1.60.1"
+    ],
+    "Resource.telemetry.sdk.version": [
+      "1.60.1"
+    ],
+    "@timestamp": [
+      "2026-06-09T19:53:22.978Z"
+    ],
+    "Scope.name.keyword": [
+      "org.mule.runtime.core.internal.processor.LoggerMessageProcessor"
+    ],
+    "TraceId.keyword": [
+      "0d468729b2cd0ce90b5f5737dc5b65c2"
+    ],
+    "Resource.workerId": [
+      "7f6874bf7b-pcg49"
+    ],
+    "Scope.version": [
+      ""
+    ]
+  }
+}
