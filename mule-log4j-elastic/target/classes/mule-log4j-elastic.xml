@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f2e4fa30-536b-42a7-a11e-cf832e454ad7" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mule-log4j-elastic-main-flow" doc:id="e54aebe0-4f82-4959-b6c4-e0e07439c8a4" >
+		<http:listener doc:name="GET /hello" doc:id="e244e5d7-bbc4-4ee0-bdb3-da7e9db98f2a" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Hello Gon!" doc:id="f1cc6609-07af-4896-a1b7-aadfbe1a2bc4" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello Gon!"&#10;}]'/>
+		<choice doc:name="Inject errors?" doc:id="ef79054c-8d18-42d1-b703-9025d2b0c016" >
+			<when expression="#[(random() * 100) &lt; (p('error.injection.rate') default '0' as Number)]" >
+				<logger level="WARN" doc:name="Logger" doc:id="8ef9656a-6e35-4a86-8fc5-8791cf796584" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&quot;message&quot;: 'Error injection: forcing failure (rate=' ++ (p('error.injection.rate') default '0') ++ '%)'&#10;}]" />
+				<raise-error doc:name="Raise error" doc:id="57d86f0f-4960-4439-bb21-25ee68d97e42" type="DEMO:INJECTED_FAILURE" description="Synthetic error injected by error.injection.rate" />
+			</when>
+			<otherwise >
+				<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello Gon!"&#10;}]' doc:name="Hello Gon!" doc:id="ac0bf676-1b38-4edc-8aac-820c84f06e86" />
+				<logger level="INFO" doc:name="Logger" doc:id="94dcbe6e-f3c9-4ccf-b44c-b76a90b4c13b" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello Gon - request succeeded"&#10;}]' />
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

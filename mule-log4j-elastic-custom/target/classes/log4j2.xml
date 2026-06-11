@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+
+	<!--These are some of the loggers you can enable. There are several more 
+		you can find in the documentation. Besides this log4j configuration, you 
+		can also use Java VM environment variables to enable other logs like network 
+		(-Djavax.net.debug=ssl or all) and Garbage Collector (-XX:+PrintGC). These 
+		will be append to the console, so you will see them in the mule_ee.log file. -->
+
+	<Appenders>
+		<RollingFile name="file"
+			fileName="${sys:mule.home}${sys:file.separator}logs${sys:file.separator}mule-log4j-elastic.log"
+			filePattern="${sys:mule.home}${sys:file.separator}logs${sys:file.separator}mule-log4j-elastic-%i.log">
+			<PatternLayout
+				pattern="%-5p %d [%t] [processor: %X{processorPath}; event: %X{correlationId}] %c: %m%n" />
+			<SizeBasedTriggeringPolicy size="10 MB" />
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+		<Console name="Console" target="SYSTEM_OUT">
+			<JsonLayout properties="true" compact="false"
+				eventEol="true" stacktraceAsString="true" includeTimeMillis="true">
+				<KeyValuePair key="@timestamp"
+					value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSXXX}" />
+				<KeyValuePair key="applicationName"
+					value="mule-log4j-elastic-custom" />
+				<KeyValuePair key="applicationVersion"
+					value="1.0.0-SNAPSHOT" />
+				<KeyValuePair key="muleRuntimeVersion"
+					value="4.10.2" />
+				<KeyValuePair key="environment"
+					value="Production" />
+				<KeyValuePair key="apiLayer" value="EXPERIENCE" />
+				<KeyValuePair key="correlationId"
+					value="$${ctx:correlationId:-}" />
+				<KeyValuePair key="flowName"
+					value="$${ctx:processorPath:-}" />
+				<KeyValuePair key="replicaId"
+					value="$${env:HOSTNAME:-$${sys:mule.nodeId:-standalone}}" />
+			</JsonLayout>
+		</Console>
+		<!-- Ship every event to Elasticsearch as a JSON document -->
+		<Http name="Elastic"
+			url="http://ec2-3-121-237-88.eu-central-1.compute.amazonaws.com:9200/mule-logs-log4j/_doc">
+			<Property name="Content-Type" value="application/json" />
+			<Property name="Authorization"
+				value="Basic bXVsZS1sb2dnZXI6TXVsZTEyMzQ=" />
+			<JsonLayout properties="true" compact="false"
+				eventEol="true" stacktraceAsString="true" includeTimeMillis="true">
+				<KeyValuePair key="@timestamp"
+					value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSXXX}" />
+				<KeyValuePair key="applicationName"
+					value="mule-log4j-elastic-custom" />
+				<KeyValuePair key="applicationVersion"
+					value="1.0.0-SNAPSHOT" />
+				<KeyValuePair key="muleRuntimeVersion"
+					value="4.10.2" />
+				<KeyValuePair key="environment"
+					value="Production" />
+				<KeyValuePair key="apiLayer" value="EXPERIENCE" />
+				<KeyValuePair key="correlationId"
+					value="$${ctx:correlationId:-}" />
+				<KeyValuePair key="flowName"
+					value="$${ctx:processorPath:-}" />
+				<KeyValuePair key="replicaId"
+					value="$${env:HOSTNAME:-$${sys:mule.nodeId:-standalone}}" />
+			</JsonLayout>
+		</Http>
+	</Appenders>
+
+	<Loggers>
+		<!-- Http Logger shows wire traffic on DEBUG -->
+		<!--AsyncLogger name="org.mule.service.http.impl.service.HttpMessageLogger" 
+			level="DEBUG"/ -->
+		<AsyncLogger name="org.mule.service.http" level="WARN" />
+		<AsyncLogger name="org.mule.extension.http" level="WARN" />
+
+		<!-- Mule logger -->
+		<AsyncLogger
+			name="org.mule.runtime.core.internal.processor.LoggerMessageProcessor"
+			level="INFO" />
+
+		<AsyncRoot level="INFO">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="Elastic" />
+			<AppenderRef ref="Console" />
+		</AsyncRoot>
+	</Loggers>
+
+</Configuration>

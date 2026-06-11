@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4c9af1a3-2c14-490b-8150-2569f4ba40a2" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mule-log4j-elastic-custom-main-flow" doc:id="c4ebf5b4-e898-40dd-b00e-acb89d838048" >
+		<http:listener doc:name="GET /hello" doc:id="9ce71444-6bc6-4c30-b59d-ff0df7327b55" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET" />
+		<flow-ref doc:name="log-context" doc:id="36d8267c-bb76-4df7-930c-6151951cb00b" name="log-context" />
+		<logger level="INFO" doc:name="Hello Gon!" doc:id="15ffe79a-2977-44d7-9541-f0e8c4a8cfc3" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello Gon!"&#10;}]' />
+		<choice doc:name="Inject errors?" doc:id="fcb7ddba-c6d5-4448-8dc5-015123ccf47a" >
+			<when expression="#[(random() * 100) &lt; (p('error.injection.rate') default '0' as Number)]" >
+				<logger level="WARN" doc:name="Logger" doc:id="207cbf3b-a2a2-433a-9a19-900a1df22a9f" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	&quot;message&quot;: 'Error injection: forcing failure (rate=' ++ (p('error.injection.rate') default '0') ++ '%)'&#10;}]" />
+				<raise-error doc:name="Raise error" doc:id="3cc5441b-1276-494f-b5cd-37c7f688cd55" type="DEMO:INJECTED_FAILURE" description="Synthetic error injected by error.injection.rate" />
+			</when>
+			<otherwise >
+				<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello Gon!"&#10;}]' doc:name="Hello Gon!" doc:id="2174917e-b650-49b7-bb14-54c783291311" />
+				<logger level="INFO" doc:name="Logger" doc:id="1770a625-6d1a-4f7a-baff-21dfc2f52070" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message": "Hello Gon - request succeeded"&#10;}]' />
+			</otherwise>
+		</choice>
+	</flow>
+	<sub-flow name="log-context" doc:id="c2275cf1-dfe2-4e3b-ad4e-16c9a6a05837" >
+		<tracing:set-logging-variable doc:id="86c3e357-5688-4081-a2dd-50cbd8de65d9" variableName="client_id" value="#[attributes.headers['client_id'] default 'Salesforce']" doc:name="client_id" />
+		<tracing:set-logging-variable doc:id="a059c9d5-9514-48e4-985c-b61c5eaec6da" variableName="http_method" value="#[attributes.method default 'GET']" doc:name="HTTP Method" />
+		<tracing:set-logging-variable doc:id="f6a97db2-7af4-4c26-a1d7-7e853f20b2f5" variableName="http.route" value="#[attributes.requestPath default '/hello']" doc:name="http.route" />
+	</sub-flow>
+</mule>
