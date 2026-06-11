@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a14cfd3e-7028-4129-bd4e-6939e858a037" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_config" doc:name="HTTP Request config" doc:id="34d6adeb-0694-4ad6-a0fa-e82aa74a57cd" >
+		<http:request-connection host="mule-traces-proc" port="8081" />
+	</http:request-config>
+	<sub-flow name="get-hello-from-proc-api" doc:id="d32976d7-6796-4914-9d2d-957fa3974715" >
+		<flow-ref doc:name="log-context" doc:id="02e55795-411e-46f5-b9c8-50de2d76d3d1" name="log-context" />
+		<logger level="INFO" doc:name="Hello from Experience API" doc:id="3ba313c9-a34f-42cf-9971-b566622c0526" message='#["Hello from Experience API"]' />
+		<logger level="INFO" doc:name="Log vars" doc:id="b0596867-6b29-44bd-aec0-f10a14b46108" message='#[vars.client_id]' />
+		<http:request doc:name="GET /hello to mule-traces-proc" doc:id="1a5e479f-46c2-4ee5-a240-50a3bf41b4d6" config-ref="HTTP_Request_config" path="/hello" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	client_id : vars.client_id
+}]]]></http:headers>
+		</http:request>
+	</sub-flow>
+	<flow name="mule-traces-exp-flow" doc:id="c1b55394-a86b-4ab8-bb2b-191c0d4dae22" >
+		<http:listener doc:name="GET /hello" doc:id="eb6fbf69-612f-4358-b021-6c552eee2a62" config-ref="HTTP_Listener_config" path="/hello"/>
+		<set-variable value='#["Postman"]' doc:name="client_id" doc:id="b1e9f6da-e42c-4ee3-a429-e2fd1808f8ec" variableName="client_id" />
+		<flow-ref doc:name="get-hello-from-proc" doc:id="0f32d5c7-d573-47e6-bade-24cb3d3c622f" name="get-hello-from-proc-api" />
+	</flow>
+	<flow name="scheduled-mule-traces-exp-mobile-app-flow" doc:id="053cbf7f-958e-4a70-9ef9-129aaf7e6fe2" >
+		<scheduler doc:name="Frequency = 1min" doc:id="7ffbc1d5-e47b-4a29-aa31-0f38a67ea8a4" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="1" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<set-variable value='#["Mobile App"]' doc:name="client_id" doc:id="19371530-dc82-4b2e-91f8-f05078b6f32f" variableName="client_id"/>
+		<flow-ref doc:name="get-hello-from-proc" doc:id="2997c216-eea5-416b-ae8e-cf2e10789e2b" name="get-hello-from-proc-api" />
+	</flow>
+	<sub-flow name="log-context" doc:id="c30bd0af-ecc0-4a90-be6d-27489c7448e6" >
+		<tracing:set-logging-variable doc:name="client_id" doc:id="cd8bf634-451b-46af-a1f4-d76b2fff845b" variableName="client_id" value="#[vars.client_id]" />
+		<tracing:set-logging-variable doc:name="HTTP Method" doc:id="fdf94b2e-9e55-437f-b50a-0de0b72853c4" variableName="http_method" value='#[attributes.method default "GET"]' />
+		<tracing:set-logging-variable doc:name="http.route" doc:id="15ede86f-de5c-44cb-95bc-4a273b802496" variableName="http.route" value='#[attributes.requestPath default "/hello"]' />
+	</sub-flow>
+	<flow name="scheduled-mule-traces-exp-web-app-flow" doc:id="b2f0542b-496c-4f57-b5bc-d0106b7fdc0d" >
+		<scheduler doc:name="Frequency = 2min" doc:id="87154df9-48dc-4b1b-8b57-6fa325b91892" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="2" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<set-variable value='#["Web App"]' doc:name="client_id" doc:id="b45ca99d-da0b-401e-b2d8-d2dee9c45c16" variableName="client_id" />
+		<flow-ref doc:name="get-hello-from-proc" doc:id="178befd1-61b0-4d92-9a2d-e822248523a3" name="get-hello-from-proc-api" />
+	</flow>
+	<flow name="scheduled-mule-traces-exp-partners-portal-flow" doc:id="87a56aad-7270-4947-8c1a-378362139938" >
+		<scheduler doc:name="Frequency = 3min" doc:id="10f3c287-383e-41c3-8df0-dd7993e82b5c" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="3" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<set-variable value='#["Partners Portal"]' doc:name="client_id" doc:id="9094cf3f-0113-43e3-afc9-f3798fa05dd2" variableName="client_id" />
+		<flow-ref doc:name="get-hello-from-proc" doc:id="9527b183-bd3e-4400-b473-e6a56ea63a4f" name="get-hello-from-proc-api" />
+	</flow>
+</mule>
